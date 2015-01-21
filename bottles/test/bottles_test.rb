@@ -76,4 +76,15 @@ VERSES
   def test_the_whole_song
     assert_equal bottles.verses(99, 0), bottles.song
   end
+
+  def test_six_pack
+    expected = <<-VERSES
+7 bottles of beer on the wall, 7 bottles of beer.
+Take one down and pass it around, 1 six-pack of beer on the wall.
+
+1 six-pack of beer on the wall, 1 six-pack of beer.
+Take one down and pass it around, 5 bottles of beer on the wall.
+VERSES
+    assert_equal expected, bottles.verses(7, 6)
+  end
 end

@@ -9,49 +9,91 @@ class Bottles
   end
 
   def verse(number)
-    "#{quantity(number).capitalize} #{container(number)} of beer on the wall, " +
-    "#{quantity(number)} #{container(number)} of beer.\n" +
-    "#{action(number)}, " +
-    "#{quantity(successor(number))} #{container(successor(number))} of beer on the wall.\n"
+    current = bottle_number(number)
+    after = bottle_number(current.successor)
+    "#{current.amount} of beer on the wall, ".capitalize +
+    "#{current.amount} of beer.\n" +
+    "#{current.action}, " +
+    "#{after.amount} of beer on the wall.\n"
   end
 
-  def container(number)
-    if number == 1
-      "bottle"
+  def bottle_number(number)
+    case number
+    when 0
+      BottleNumber0.new(number)
+    when 1
+      BottleNumber1.new(number)
+    when 6
+      BottleNumber6.new(number)
     else
-      "bottles"
+      BottleNumber.new(number)
     end
   end
+end
 
-  def pronoun(number)
-    if number == 1
-      "it"
-    else
-      "one"
-    end
+class BottleNumber
+  attr_reader :number
+  def initialize(number)
+    @number = number
   end
 
-  def quantity(number)
-    if number == 0
-      "no more"
-    else
-      number.to_s
-    end
+  def container
+    "bottles"
   end
 
-  def action(number)
-    if number == 0
-      "Go to the store and buy some more"
-    else
-      "Take #{pronoun(number)} down and pass it around"
-    end
+  def pronoun
+    "one"
   end
 
-  def successor(number)
-    if number == 0
-      99
-    else
-      number - 1
-    end
+  def quantity
+    number.to_s
+  end
+
+  def amount
+    "#{quantity} #{container}"
+  end
+
+  def action
+    "Take #{pronoun} down and pass it around"
+  end
+
+  def successor
+    number - 1
+  end
+end
+
+class BottleNumber0 < BottleNumber
+  def quantity
+    'no more'
+  end
+
+  def action
+    "Go to the store and buy some more"
+  end
+
+  def successor
+    99
+  end
+end
+
+class BottleNumber1 < BottleNumber
+  def container
+    "bottle"
+  end
+
+  def pronoun
+    "it"
+  end
+
+end
+
+
+class BottleNumber6 < BottleNumber
+  def container
+    "six-pack"
+  end
+
+  def quantity
+    1.to_s
   end
 end
